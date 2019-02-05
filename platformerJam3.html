@@ -100,12 +100,14 @@
         }, this);
 
         cursor = this.input.keyboard.createCursorKeys();
+
+        timedEvent = this.time.addEvent({ delay: Phaser.Math.Between(30,120), callback: onEvent, callbackScope: this, loop: true });
     }
 
     function update ()
     {
 
-      timedEvent = this.time.delayedCall(Phaser.Math.Between(500,3000), onEvent, [], this);
+
 
       if(cursor.left.isDown)
       {
