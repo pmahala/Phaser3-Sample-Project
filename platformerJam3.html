@@ -101,7 +101,7 @@
 
         cursor = this.input.keyboard.createCursorKeys();
 
-        timedEvent = this.time.addEvent({ delay: Phaser.Math.Between(30,120), callback: onEvent, callbackScope: this, loop: true });
+        timedEvent = this.time.addEvent({ delay: Phaser.Math.Between(300,2000), callback: onEvent, callbackScope: this, loop: true });
     }
 
     function update ()
@@ -140,7 +140,9 @@
           radius: 13
         }
       );
-      air_particle.setVelocityX(70);
+      air_particle.setIgnoreGravity(true);
+      air_particle.setFrictionAir(0);
+      air_particle.setVelocityX(10);
 
 
     }
