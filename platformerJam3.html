@@ -37,8 +37,10 @@
     var player;
     var cursor;
     var timedEvent;
+    var resetFlagEvent;
 
     var air_particle;
+    var hitByParticle = false;
 
     var game = new Phaser.Game(config);
 
@@ -84,19 +86,35 @@
           //console.log("collisionstart");
           if(bodyA.gameObject != null && bodyB.gameObject != null) {
             //console.log(bodyB);
-            if(bodyB.gameObject.xType == "air_particle") {
+            if(bodyB.gameObject.xType == "air_particle" && bodyA.gameObject.xType == "air_particle") {
               //console.log("HIT_B");
               bodyB.gameObject.visible = false;
               bodyB.gameObject.destroy();
+              bodyA.gameObject.visible = false;
+              bodyA.gameObject.destroy();
               //bodyB.destroy();
             }
 
-            if(bodyA.gameObject.xType == "air_particle") {
-              //console.log("HIT_A");
+            if(bodyA.gameObject.xType == "air_particle" && bodyB.gameObject.xType == "player")
+            {
               bodyA.gameObject.visible = false;
               bodyA.gameObject.destroy();
-              //bodyA.destroy();
+              hitByParticle = true;
+              bodyB.gameObject.setVelocityX(7);
+              resetFlagEvent = this.time.delayedCall(2000, resetFlag, [], this);
+
+
             }
+            else if(bodyB.gameObject.xType == "air_particle" && bodyA.gameObject.xType == "player")
+            {
+              bodyB.gameObject.visible = false;
+              bodyB.gameObject.destroy();
+              hitByParticle = true;
+              bodyA.gameObject.setVelocityX(7);
+              resetFlagEvent = this.time.delayedCall(2000, resetFlag, [], this);
+            }
+
+
           }
 
         }, this);
@@ -105,6 +123,7 @@
         this.cameras.main.startFollow(player, true, 0.09, 0.09);  //make camera follow the player
 
         timedEvent = this.time.addEvent({ delay: Phaser.Math.Between(300,2000), callback: onEvent, callbackScope: this, loop: true });
+
     }
 
     function update ()
@@ -112,13 +131,13 @@
 
 
 
-      if(cursor.left.isDown)
+      if(cursor.left.isDown && !hitByParticle)
       {
         player.setVelocityX(-4);
 
       }
 
-      if(cursor.right.isDown)
+      if(cursor.right.isDown && !hitByParticle)
       {
         player.setVelocityX(4);
       }
@@ -127,6 +146,11 @@
       {
         player.setVelocityY(-3);
       }
+    }
+
+    function resetFlag()
+    {
+      hitByParticle = false;
     }
 
     function onEvent()
