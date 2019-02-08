@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 2</title>
+    <script src="phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 640,
+        height: 480,
+        physics: {                              //for physics system
+          default: 'matter',
+          matter: {
+            gravity: { x: 2,
+                      y: 3},
+            debug: true
+          }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var level;
+    var player;
+    var cursor;
+    var timedEvent;
+
+    var air_particle;
+
+    var game = new Phaser.Game(config);
+
+    function preload ()
+    {
+        this.load.image('Back', 'assets/Background.png');
+        this.load.image('Front', 'assets/Foreground.png');
+
+    }
+
+    function create ()
+    {
+
+        this.back = this.add.tileSprite(640/2,480/2,640,480,'Back');
+
+        this.front = this.add.tileSprite(640/2,480/2,640,480,'Front');
+
+    }
+
+    function update ()
+    {
+        this.back.tilePositionX += 0.05;
+        this.front.tilePositionX += 0.25;
+
+    }
+
+
+
+</script>
+
+</body>
+</html>
